@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>旋转时钟</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<style>
+	* {
+		-webkit-backface-visibility: hidden;
+		backface-visibility: hidden;
+		-webkit-transform: translateZ(0) scale(1.0, 1.0);
+		transform: translateZ(0) scale(1.0, 1.0);
+	}
+	html, body {
+		margin: 0;
+		padding: 0;
+		height: 100%;
+		background: #112;
+		font-family: 'Righteous', cursive;
+	}
+	/* 给根元素设置一个变量，便于下面元素使用(此处的:root指html)
+	 * 变量值：字体自适应屏幕
+	 */
+	:root {
+		--base: 6vmin;
+	}
+	.container {
+		position: relative;
+		top: calc(50% - var(--base) * 7);
+		width: calc(var(--base) * 14);
+		height: calc(var(--base) * 14);
+		margin: 0 auto;
+		font-size: var(--base);
+		color: darkgoldenrod;
+		overflow: hidden;
+	}
+	.rotate-box {
+		position: absolute;
+		border-style: solid;
+		border-radius: 100%;
+		box-sizing: border-box;
+		transition: all .5s ease;
+	}
+	.center, .box-h2, .box-m2, .box-s2 {
+		border-width: calc(var(--base) / 10);
+		border-color: goldenrod;
+	}
+	.box-h1, .box-m1, .box-s1 {
+		border-width: calc(var(--base) / 15);
+		border-color: lightgoldenrod;
+	}
+	.center {
+		top: calc(var(--base) * 6);
+		left: calc(var(--base) * 6);
+		width: calc(var(--base) * 2);
+		height: calc(var(--base) * 2);
+		padding-left: calc(var(--base) / 4);
+		text-align: center;
+		line-height: 170%;
+		color: ivory;
+	}
+	.num {
+		position: absolute;
+		top: 50%;
+		margin-top: calc(var(--base) / -2);
+		width: 100%;
+		height: calc(var(--base));
+		line-height: 100%;
+		transition: all .5s ease;
+	}
+	.num div {
+		float: right;
+		width: calc(var(--base) / 1.1);
+		text-align: center;
+		transition: all .5s ease;
+	}
+	/* Hours */
+	.box-h1 {
+		top: calc(var(--base) * 5);
+		left: calc(var(--base) * 5);
+		width: calc(var(--base) * 4);
+		height: calc(var(--base) * 4);
+	}
+	.box-h1 .num-1 {
+		transform: rotate(120deg);
+	}
+	.box-h1 .num-2 {
+		transform: rotate(240deg);
+	}
+	.box-h2 {
+		top: calc(var(--base) * 4);
+		left: calc(var(--base) * 4);
+		width: calc(var(--base) * 6);
+		height: calc(var(--base) * 6);
+	}
+	.box-h2 .num-1 {
+		transform: rotate(36deg);
+	}
+	.box-h2 .num-2 {
+		transform: rotate(72deg);
+	}
+	.box-h2 .num-3 {
+		transform: rotate(108deg);
+	}
+	.box-h2 .num-4 {
+		transform: rotate(144deg);
+	}
+	.box-h2 .num-5 {
+		transform: rotate(180deg);
+	}
+	.box-h2 .num-6 {
+		transform: rotate(216deg);
+	}
+	.box-h2 .num-7 {
+		transform: rotate(252deg);
+	}
+	.box-h2 .num-8 {
+		transform: rotate(288deg);
+	}
+	.box-h2 .num-9 {
+		transform: rotate(324deg);
+	}
+	/* Minutes */
+	.box-m1 {
+		top: calc(var(--base) * 3);
+		left: calc(var(--base) * 3);
+		width: calc(var(--base) * 8);
+		height: calc(var(--base) * 8);
+	}
+	.box-m1 .num-1 {
+		transform: rotate(60deg);
+	}
+	.box-m1 .num-2 {
+		transform: rotate(120deg);
+	}
+	.box-m1 .num-3 {
+		transform: rotate(180deg);
+	}
+	.box-m1 .num-4 {
+		transform: rotate(240deg);
+	}
+	.box-m1 .num-5 {
+		transform: rotate(300deg);
+	}
+	.box-m2 {
+		top: calc(var(--base) * 2);
+		left: calc(var(--base) * 2);
+		width: calc(var(--base) * 10);
+		height: calc(var(--base) * 10);
+	}
+	.box-m2 .num-1 {
+		transform: rotate(36deg);
+	}
+	.box-m2 .num-2 {
+		transform: rotate(72deg);
+	}
+	.box-m2 .num-3 {
+		transform: rotate(108deg);
+	}
+	.box-m2 .num-4 {
+		transform: rotate(144deg);
+	}
+	.box-m2 .num-5 {
+		transform: rotate(180deg);
+	}
+	.box-m2 .num-6 {
+		transform: rotate(216deg);
+	}
+	.box-m2 .num-7 {
+		transform: rotate(252deg);
+	}
+	.box-m2 .num-8 {
+		transform: rotate(288deg);
+	}
+	.box-m2 .num-9 {
+		transform: rotate(324deg);
+	}
+	/* Seconds */
+	.box-s1 {
+		top: calc(var(--base) * 1);
+		left: calc(var(--base) * 1);
+		width: calc(var(--base) * 12);
+		height: calc(var(--base) * 12);
+	}
+	.box-s1 .num-1 {
+		transform: rotate(60deg);
+	}
+	.box-s1 .num-2 {
+		transform: rotate(120deg);
+	}
+	.box-s1 .num-3 {
+		transform: rotate(180deg);
+	}
+	.box-s1 .num-4 {
+		transform: rotate(240deg);
+	}
+	.box-s1 .num-5 {
+		transform: rotate(300deg);
+	}
+	.box-s2 {
+		top: calc(var(--base) * 0);
+		left: calc(var(--base) * 0);
+		width: calc(var(--base) * 14);
+		height: calc(var(--base) * 14);
+	}
+	.box-s2 .num-1 {
+		transform: rotate(36deg);
+	}
+	.box-s2 .num-2 {
+		transform: rotate(72deg);
+	}
+	.box-s2 .num-3 {
+		transform: rotate(108deg);
+	}
+	.box-s2 .num-4 {
+		transform: rotate(144deg);
+	}
+	.box-s2 .num-5 {
+		transform: rotate(180deg);
+	}
+	.box-s2 .num-6 {
+		transform: rotate(216deg);
+	}
+	.box-s2 .num-7 {
+		transform: rotate(252deg);
+	}
+	.box-s2 .num-8 {
+		transform: rotate(288deg);
+	}
+	.box-s2 .num-9 {
+		transform: rotate(324deg);
+	}
+	/* js动态添加类名,实现动画效果 */
+	/* Hours */
+	.box-h1-0 {
+		transform: rotate(360deg);
+	}
+	.box-h1-1 {
+		transform: rotate(240deg);
+	}
+	.box-h1-2 {
+		transform: rotate(120deg);
+	}
+	.box-h1-switch {
+		transform: rotate(480deg);
+		transition: none !important;
+	}
+	.box-h2-0 {
+		transform: rotate(360deg);
+	}
+	.box-h2-1 {
+		transform: rotate(324deg);
+	}
+	.box-h2-2 {
+		transform: rotate(288deg);
+	}
+	.box-h2-3 {
+		transform: rotate(252deg);
+	}
+	.box-h2-4 {
+		transform: rotate(216deg);
+	}
+	.box-h2-5 {
+		transform: rotate(180deg);
+	}
+	.box-h2-6 {
+		transform: rotate(144deg);
+	}
+	.box-h2-7 {
+		transform: rotate(108deg);
+	}
+	.box-h2-8 {
+		transform: rotate(72deg);
+	}
+	.box-h2-9 {
+		transform: rotate(36deg);
+	}
+	.box-h2-switch {
+		transform: rotate(396deg);
+		transition: none !important;
+	}
+	/* Minutes */
+	.box-m1-0 {
+		transform: rotate(360deg);
+	}
+	.box-m1-1 {
+		transform: rotate(300deg);
+	}
+	.box-m1-2 {
+		transform: rotate(240deg);
+	}
+	.box-m1-3 {
+		transform: rotate(180deg);
+	}
+	.box-m1-4 {
+		transform: rotate(120deg);
+	}
+	.box-m1-5 {
+		transform: rotate(60deg);
+	}
+	.box-m1-switch {
+		transform: rotate(420deg);
+		transition: none !important;
+	}
+	.box-m2-0 {
+		transform: rotate(360deg);
+	}
+	.box-m2-1 {
+		transform: rotate(324deg);
+	}
+	.box-m2-2 {
+		transform: rotate(288deg);
+	}
+	.box-m2-3 {
+		transform: rotate(252deg);
+	}
+	.box-m2-4 {
+		transform: rotate(216deg);
+	}
+	.box-m2-5 {
+		transform: rotate(180deg);
+	}
+	.box-m2-6 {
+		transform: rotate(144deg);
+	}
+	.box-m2-7 {
+		transform: rotate(108deg);
+	}
+	.box-m2-8 {
+		transform: rotate(72deg);
+	}
+	.box-m2-9 {
+		transform: rotate(36deg);
+	}
+	.box-m2-switch {
+		transform: rotate(396deg);
+		transition: none !important;
+	}
+	/* Seconds */
+	.box-s1-0 {
+		transform: rotate(360deg);
+	}
+	.box-s1-1 {
+		transform: rotate(300deg);
+	}
+	.box-s1-2 {
+		transform: rotate(240deg);
+	}
+	.box-s1-3 {
+		transform: rotate(180deg);
+	}
+	.box-s1-4 {
+		transform: rotate(120deg);
+	}
+	.box-s1-5 {
+		transform: rotate(60deg);
+	}
+	.box-s1-switch {
+		transform: rotate(420deg);
+		transition: none !important;
+	}
+	.box-s2-0 {
+		transform: rotate(360deg);
+	}
+	.box-s2-1 {
+		transform: rotate(324deg);
+	}
+	.box-s2-2 {
+		transform: rotate(288deg);
+	}
+	.box-s2-3 {
+		transform: rotate(252deg);
+	}
+	.box-s2-4 {
+		transform: rotate(216deg);
+	}
+	.box-s2-5 {
+		transform: rotate(180deg);
+	}
+	.box-s2-6 {
+		transform: rotate(144deg);
+	}
+	.box-s2-7 {
+		transform: rotate(108deg);
+	}
+	.box-s2-8 {
+		transform: rotate(72deg);
+	}
+	.box-s2-9 {
+		transform: rotate(36deg);
+	}
+	.box-s2-switch {
+		transform: rotate(396deg);
+		transition: none !important;
+	}
+	.curr-num div {
+		font-size: calc(var(--base) * 1.3);
+		color: ivory;
+	}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<!-- Center -->
+		<div class="rotate-box center">></div>
+		<!-- Hours -->
+		<div class="rotate-box box-h1" id="box-h1">
+			<div class="num num-0" id="num-0-h1">
+				<div>0</div>
+			</div>
+			<div class="num num-1" id="num-1-h1">
+				<div>1</div>
+			</div>
+			<div class="num num-2" id="num-2-h1">
+				<div>2</div>
+			</div>
+		</div>
+		<div class="rotate-box box-h2" id="box-h2">
+			<div class="num num-0" id="num-0-h2">
+				<div>0</div>
+			</div>
+			<div class="num num-1" id="num-1-h2">
+				<div>1</div>
+			</div>
+			<div class="num num-2" id="num-2-h2">
+				<div>2</div>
+			</div>
+			<div class="num num-3" id="num-3-h2">
+				<div>3</div>
+			</div>
+			<div class="num num-4" id="num-4-h2">
+				<div>4</div>
+			</div>
+			<div class="num num-5" id="num-5-h2">
+				<div>5</div>
+			</div>
+			<div class="num num-6" id="num-6-h2">
+				<div>6</div>
+			</div>
+			<div class="num num-7" id="num-7-h2">
+				<div>7</div>
+			</div>
+			<div class="num num-8" id="num-8-h2">
+				<div>8</div>
+			</div>
+			<div class="num num-9" id="num-9-h2">
+				<div>9</div>
+			</div>
+		</div>
+		<!-- Minutes -->
+		<div class="rotate-box box-m1" id="box-m1">
+			<div class="num num-0" id="num-0-m1">
+				<div>0</div>
+			</div>
+			<div class="num num-1" id="num-1-m1">
+				<div>1</div>
+			</div>
+			<div class="num num-2" id="num-2-m1">
+				<div>2</div>
+			</div>
+			<div class="num num-3" id="num-3-m1">
+				<div>3</div>
+			</div>
+			<div class="num num-4" id="num-4-m1">
+				<div>4</div>
+			</div>
+			<div class="num num-5" id="num-5-m1">
+				<div>5</div>
+			</div>
+		</div>
+		<div class="rotate-box box-m2" id="box-m2">
+			<div class="num num-0" id="num-0-m2">
+				<div>0</div>
+			</div>
+			<div class="num num-1" id="num-1-m2">
+				<div>1</div>
+			</div>
+			<div class="num num-2" id="num-2-m2">
+				<div>2</div>
+			</div>
+			<div class="num num-3" id="num-3-m2">
+				<div>3</div>
+			</div>
+			<div class="num num-4" id="num-4-m2">
+				<div>4</div>
+			</div>
+			<div class="num num-5" id="num-5-m2">
+				<div>5</div>
+			</div>
+			<div class="num num-6" id="num-6-m2">
+				<div>6</div>
+			</div>
+			<div class="num num-7" id="num-7-m2">
+				<div>7</div>
+			</div>
+			<div class="num num-8" id="num-8-m2">
+				<div>8</div>
+			</div>
+			<div class="num num-9" id="num-9-m2">
+				<div>9</div>
+			</div>
+		</div>
+		<!-- Seconds -->
+		<div class="rotate-box box-s1" id="box-s1">
+			<div class="num num-0" id="num-0-s1">
+				<div>0</div>
+			</div>
+			<div class="num num-1" id="num-1-s1">
+				<div>1</div>
+			</div>
+			<div class="num num-2" id="num-2-s1">
+				<div>2</div>
+			</div>
+			<div class="num num-3" id="num-3-s1">
+				<div>3</div>
+			</div>
+			<div class="num num-4" id="num-4-s1">
+				<div>4</div>
+			</div>
+			<div class="num num-5" id="num-5-s1">
+				<div>5</div>
+			</div>
+		</div>
+		<div class="rotate-box box-s2" id="box-s2">
+			<div class="num num-0" id="num-0-s2">
+				<div>0</div>
+			</div>
+			<div class="num num-1" id="num-1-s2">
+				<div>1</div>
+			</div>
+			<div class="num num-2" id="num-2-s2">
+				<div>2</div>
+			</div>
+			<div class="num num-3" id="num-3-s2">
+				<div>3</div>
+			</div>
+			<div class="num num-4" id="num-4-s2">
+				<div>4</div>
+			</div>
+			<div class="num num-5" id="num-5-s2">
+				<div>5</div>
+			</div>
+			<div class="num num-6" id="num-6-s2">
+				<div>6</div>
+			</div>
+			<div class="num num-7" id="num-7-s2">
+				<div>7</div>
+			</div>
+			<div class="num num-8" id="num-8-s2">
+				<div>8</div>
+			</div>
+			<div class="num num-9" id="num-9-s2">
+				<div>9</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		window.onload = function() {
+			startTime();
+		};
+		// 给指定元素添加类名
+		function addClassName(idName, className) {
+			var element = document.getElementById(idName);
+			if(element === null) {
+				return;
+			}
+			if(element.classList.contains(className) !== true) {
+				element.classList.add(className);
+			}
+		};
+		// 删除元素指定的类名
+		function removeClassName(idName, className) {
+			var element = document.getElementById(idName);
+			if(element === null) {
+				return;
+			}
+			if(element.classList.contains(className) === true) {
+				element.classList.remove(className);
+			}
+		};
+		// 给时、分、秒的各个容器设置类名
+		function setClassName(target, val) {
+			for(var i = 0; i < 10; i++) {
+				if(i !== val) {
+					removeClassName('box-' + target, 'box-' + target + '-' + i);
+					removeClassName('num-' + i + '-' + target, 'curr-num');
+				}
+			}
+			addClassName('box-' + target, 'box-' + target + '-' + val);
+			addClassName('num-' + val + '-' + target, 'curr-num');
+
+			if(val === 0) {
+				delSwitch(target, val);
+			}
+			setTimeout(function () {
+				switcher(target, val);
+			}, 500);
+		};
+		// 切换类名
+		function switcher(target, val) {
+			switch('box-' + target + '-' + val) {
+				case 'box-h1-2':
+					removeClassName('box-h1', 'box-h1-2');
+					addClassName('box-h1', 'box-h1-switch');
+					break;
+				case 'box-h2-9':
+					removeClassName('box-h2', 'box-h2-9');
+					addClassName('box-h2', 'box-h2-switch');
+					break;
+				case 'box-m1-5':
+					removeClassName('box-m1', 'box-m1-5');
+					addClassName('box-m1', 'box-m1-switch');
+					break;
+				case 'box-m2-9':
+					removeClassName('box-m2', 'box-m2-9');
+					addClassName('box-m2', 'box-m2-switch');
+					break;
+				case 'box-s1-5':
+					removeClassName('box-s1', 'box-s1-5');
+					addClassName('box-s1', 'box-s1-switch');
+					break;
+				case 'box-s2-9':
+					removeClassName('box-s2', 'box-s2-9');
+					addClassName('box-s2', 'box-s2-switch');
+					break;
+			};
+		};
+		// 删除 *switch的类名
+		function delSwitch(target, val) {
+			removeClassName('box-' + target, 'box-' + target + '-switch');
+		};
+		function startTime() {
+			var nowTime = new Date();
+			var h = nowTime.getHours();
+			var m = nowTime.getMinutes();
+			var s = nowTime.getSeconds();
+
+			var h1 = (h - h % 10) / 10;
+			var h2 = h % 10;
+
+			var m1 = (m - m % 10) / 10;
+			var m2 = m % 10;
+
+			var s1 = (s - s % 10) / 10;
+			var s2 = s % 10;
+
+			setClassName('s1', s1);
+			setClassName('s2', s2);
+
+			setClassName('m1', m1);
+			setClassName('m2', m2);
+
+			setClassName('h1', h1);
+			setClassName('h2', h2);
+
+			setTimeout(startTime, 500);
+		};
+	</script>
+</body>
+</html>
