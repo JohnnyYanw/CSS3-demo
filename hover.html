@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Hover Demo</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		ul, li {
+			list-style: none;
+		}
+		.container {
+			width: 805px;
+			margin: 30px auto 0;
+			height: 320px;
+			overflow: hidden;
+		}
+		.container ul {
+			width: 10000px;
+			height: 100%;
+		}
+		.container .item {
+			float: left;
+			width: 160px;
+			border-left: solid 1px #666;
+			-webkit-transition: all .5s;
+			transition: all .5s;
+		}
+		.container ul:hover li {
+			width: 40px;
+		}
+		.container .item:hover {
+			width: 640px;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<ul>
+			<li class="item"><img src="./panda.jpg"></li>
+			<li class="item"><img src="./toy.jpg"></li>
+			<li class="item"><img src="./wall.jpg"></li>
+			<li class="item"><img src="./up.jpg"></li>
+			<li class="item"><img src="./cars.jpg"></li>
+		</ul>
+	</div>
+</body>
+</html>
