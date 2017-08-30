@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>CSS3动画</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		#div {
+			width: 200px;
+			height: 200px;
+			border: 1px solid blue;
+			border-radius: 50%;
+			margin: 200px auto;
+			position: relative;
+			animation: myfirst 5s infinite linear;
+		}
+		@keyframes myfirst {
+			0%   {transform: rotateZ(0deg)}
+			50%  {transform: rotateZ(180deg)}
+			100% {transform: rotateZ(360deg)}
+		}
+		.item {
+			width: 50px;
+			height: 50px;
+			border: 1px solid red;
+			position: absolute;
+			animation: itemRotate 5s linear infinite;
+		}
+		@keyframes itemRotate {
+			0%   {transform: rotateZ(0deg)}
+			50%  {transform: rotateZ(-180deg)}
+			100% {transform: rotateZ(-360deg)}
+		}
+		.a {
+			top: -25px;
+			left: 75px;
+		}
+		.b {
+			top: 75px;
+			left: -25px;
+		}
+		.c {
+			top: 175px;
+			left: 75px;
+		}
+		.d {
+			top: 75px;
+			left: 175px;
+		}
+	</style>
+</head>
+<body>
+	<div id="div">
+		<div class="item a">1</div>
+		<div class="item b">2</div>
+		<div class="item c">3</div>
+		<div class="item d">4</div>
+	</div>
+</body>
+</html>
